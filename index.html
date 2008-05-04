@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Prototype Rating</title>
+	<link rel="stylesheet" href="stylesheets/base.css" type="text/css">
+	<link rel="stylesheet" href="stylesheets/rating.css" type="text/css">
+	<script type="text/javascript" charset="utf-8" src="javascripts/prototype.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/rating.js"></script>
+	<script type="text/javascript" charset="utf-8">
+    document.observe('dom:loaded', function(event) {
+      new Rating({
+        onRate: function(element, value) {
+          alert(element.id + " - " + value)
+        }
+      });
+    });
+	</script>
+</head>
+<body>
+  <div class="rating">
+    <div class="star on"></div>
+    <div class="star on"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+  </div>
+</body>
+</html>
