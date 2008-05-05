@@ -47,11 +47,13 @@ var Ratable = Class.create({
       onRate: Prototype.emptyFunction,
       labelClassName: 'label',
       labelValues: ['bad', 'not bad', 'good', 'very good', 'excellent'],
-      labelTemplate: "#{text}",
+      labelText: "#{text}",
+      afterRatelabelText: "Thanks for voting!",
       resetDelay: 0.0,
       disabledOnRate: true
     }, arguments[1] || {}); 
     this.disabled = false;
+    this.labelText = '';
     this.stars = new Array();
     this.resettingTimeout = null;
     this.label = this.element.down('.' + this.options.labelClassName);
@@ -85,7 +87,7 @@ var Ratable = Class.create({
     if(this.disabled) return;
     if(this.resettingTimeout) clearTimeout(this.resettingTimeout);
     this.select();
-    this.updateLabel();
+    this.updateLabelText();
   },
   
   handleMouseOut: function(event) {    
@@ -95,16 +97,23 @@ var Ratable = Class.create({
   
   handleClick: function(event) {
     if(this.disabled) return;
-    if(this.options.disabledOnRate) this.disabled = true;
+    if(this.options.disabledOnRate) this.disabled = true;    
+    var rate = this.getCurrentRating();
+    var text = this.options.labelValues[rate - 1] ? this.options.labelValues[rate - 1] : "";
+    this.labelText = new Template(this.options.afterRatelabelText).evaluate({text: text, rate: rate});
+    this.updateLabel();
     this.options.onRate(this.element, this.getCurrentRating());
   },
   
+  updateLabelText: function() {
+    var rate = this.getCurrentRating();
+    var text = this.options.labelValues[rate - 1] ? this.options.labelValues[rate - 1] : "";
+    this.labelText = new Template(this.options.labelTemplate).evaluate({text: text, rate: rate});
+    this.updateLabel();
+  },
+  
   updateLabel: function() {
-    if(this.label) {
-      var rate = this.getCurrentRating();
-      var text = this.options.labelValues[rate - 1] ? this.options.labelValues[rate - 1] : "";
-      this.label.update(new Template(this.options.labelTemplate).evaluate({text: text, rate: rate}));
-    }
+    if(this.label) this.label.update(this.labelText);
   },
   
   select: function() {
