@@ -48,8 +48,10 @@ var Ratable = Class.create({
       labelClassName: 'label',
       labelValues: ['bad', 'not bad', 'good', 'very good', 'excellent'],
       labelTemplate: "#{text}",
-      resetDelay: 0.0
-    }, arguments[1] || {});
+      resetDelay: 0.0,
+      disabledOnRate: true
+    }, arguments[1] || {}); 
+    this.disabled = false;
     this.stars = new Array();
     this.resettingTimeout = null;
     this.label = this.element.down('.' + this.options.labelClassName);
@@ -80,13 +82,21 @@ var Ratable = Class.create({
   },
   
   handleMouseOver: function(event) {
+    if(this.disabled) return;
     if(this.resettingTimeout) clearTimeout(this.resettingTimeout);
     this.select();
     this.updateLabel();
   },
   
   handleMouseOut: function(event) {    
+    if(this.disabled) return;
     this.resettingTimeout = this.deselect.bind(this).delay(this.options.resetDelay);
+  },
+  
+  handleClick: function(event) {
+    if(this.disabled) return;
+    if(this.options.disabledOnRate) this.disabled = true;
+    this.options.onRate(this.element, this.getCurrentRating());
   },
   
   updateLabel: function() {
@@ -104,11 +114,7 @@ var Ratable = Class.create({
   deselect: function() {  
     this.reset();
     this.element.removeClassName('selected');
-  },
-  
-  handleClick: function(event) {
-    this.options.onRate(this.element, this.getCurrentRating());
-  },
+  },    
   
   getCurrentRating: function() {
     var i;
@@ -119,6 +125,7 @@ var Ratable = Class.create({
   },
   
   selectStar: function(selected_star) {
+    if(this.disabled) return;
     var found = false;
     this.stars.each(function(star) {
       found ? star.deselect() : star.select();

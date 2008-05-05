@@ -13,7 +13,6 @@
     document.observe('dom:loaded', function(event) {
       new Rating({
         onRate: function(element, value) {
-          alert(element.id + " - " + value)
         },
         labelTemplate: "#{rate} #{text}",
         resetDelay: 0.1
