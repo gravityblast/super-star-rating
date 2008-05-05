@@ -11,12 +11,12 @@
 	<script type="text/javascript" charset="utf-8" src="javascripts/rating.js"></script>
 	<script type="text/javascript" charset="utf-8">
     document.observe('dom:loaded', function(event) {
-      new Rating();
       new Rating({
         onRate: function(element, value) {
           alert(element.id + " - " + value)
         },
-        labelTemplate: "#{rate} #{text}"
+        labelTemplate: "#{rate} #{text}",
+        resetDelay: 1
       });
     });
 	</script>

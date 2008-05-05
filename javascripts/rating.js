@@ -46,7 +46,8 @@ var Ratable = Class.create({
       onRate: Prototype.emptyFunction,
       labelClassName: 'label',
       labelValues: ['bad', 'not bad', 'good', 'very good', 'excellent'],
-      labelTemplate: "#{text}"
+      labelTemplate: "#{text}",
+      resetDelay: 0.2
     }, arguments[1] || {});
     this.stars = new Array();
     this.resettingTimeout = null;
@@ -84,7 +85,7 @@ var Ratable = Class.create({
   },
   
   handleMouseOut: function(event) {    
-    this.resettingTimeout = this.deselect.bind(this).delay(0.2);
+    this.resettingTimeout = this.deselect.bind(this).delay(this.options.resetDelay);
   },
   
   updateLabel: function() {
@@ -138,6 +139,7 @@ var Rating = Class.create({
 
   setup: function() {
     $$('.' + this.options.className).each(function(element) {
+      alert(element.id)
       new Ratable(element, this.options);
     }.bind(this));
   }
