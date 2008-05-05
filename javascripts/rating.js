@@ -117,14 +117,15 @@ var Ratable = Class.create({
   },
   
   createAjax: function() {    
-    if(this.options.ajaxUrl && this.label) {
+    if(this.options.ajaxUrl) {
       var rate = this.getCurrentRating();
       var url = new Template(this.options.ajaxUrl).evaluate({id: this.id, rate: rate});
       var parameters = new Template(this.options.ajaxParameters).evaluate({id: this.id, rate: rate});
-      new Ajax.Updater(this.label, url, {
-        method: this.options.ajaxMethod,
-        parameters: parameters
-      });
+      if(this.label) {
+        new Ajax.Updater(this.label, url, { method: this.options.ajaxMethod, parameters: parameters });
+      } else {
+        new Ajax.Request(url, { method: this.options.ajaxMethod, parameters: parameters });
+      }      
     }
   },
   
@@ -167,7 +168,7 @@ var Ratable = Class.create({
   
 });
 
-r Rating = Class.create({
+var Rating = Class.create({
 
   initialize: function(class_name) {
     this.class_name = class_name;
