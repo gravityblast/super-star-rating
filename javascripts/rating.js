@@ -1,6 +1,9 @@
-/*
+/* PrototypeRating, version 0.1
+ * Copyright (c) 2008 Andrea Franz (http://gravityblast.com) 
+ *
+ * PrototypeRating is freely distributable under the terms of an MIT-style license.
  */
-
+ 
 var RatingStar = Class.create({
 
   initialize: function(element, ratable) {
@@ -40,14 +43,19 @@ var Ratable = Class.create({
   initialize: function(element) {
     this.element = element;
     this.options = Object.extend({
-      onRate: Prototype.emptyFunction
+      onRate: Prototype.emptyFunction,
+      labelClassName: 'label',
+      labelValues: ['bad', 'not bad', 'good', 'very good', 'excellent'],
+      labelTemplate: "#{text}"
     }, arguments[1] || {});
     this.stars = new Array();
     this.resettingTimeout = null;
+    this.label = this.element.down('.' + this.options.labelClassName);
     this.setup();
   },
 
   setup: function() {
+    if(this.label) this.labelInitValue = this.label.innerHTML;
     this.element.select('.star').each(function(element) {
       this.stars.push(new RatingStar(element, this));      
     }.bind(this));
@@ -57,18 +65,34 @@ var Ratable = Class.create({
   },
   
   reset: function() {
+    this.resetLabel();
     this.stars.each(function(star) {
       star.reset();
-    });
+    });    
+  },
+  
+  resetLabel: function() {
+    if(this.label) {
+      this.label.update(this.labelInitValue);
+    }
   },
   
   handleMouseOver: function(event) {
     if(this.resettingTimeout) clearTimeout(this.resettingTimeout);
     this.select();
+    this.updateLabel();
   },
   
   handleMouseOut: function(event) {    
-    this.resettingTimeout = this.deselect.bind(this).delay(0.3);
+    this.resettingTimeout = this.deselect.bind(this).delay(0.2);
+  },
+  
+  updateLabel: function() {
+    if(this.label) {
+      var rate = this.getCurrentRating();
+      var text = this.options.labelValues[rate - 1] ? this.options.labelValues[rate - 1] : "";
+      this.label.update(new Template(this.options.labelTemplate).evaluate({text: text, rate: rate}));
+    }
   },
   
   select: function() {
@@ -106,13 +130,14 @@ var Rating = Class.create({
 
   initialize: function() {
     this.options = Object.extend({
+      className: 'rating',
       onRate: Prototype.emptyFunction
     }, arguments[0] || {});
     this.setup();
   },
 
   setup: function() {
-    $$('.rating').each(function(element) {
+    $$('.' + this.options.className).each(function(element) {
       new Ratable(element, this.options);
     }.bind(this));
   }

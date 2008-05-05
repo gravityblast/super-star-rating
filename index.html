@@ -11,21 +11,30 @@
 	<script type="text/javascript" charset="utf-8" src="javascripts/rating.js"></script>
 	<script type="text/javascript" charset="utf-8">
     document.observe('dom:loaded', function(event) {
+      new Rating();
       new Rating({
         onRate: function(element, value) {
           alert(element.id + " - " + value)
-        }
+        },
+        labelTemplate: "#{rate} #{text}"
       });
     });
 	</script>
 </head>
 <body>
-  <div class="rating">
-    <div class="star on"></div>
-    <div class="star on"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-  </div>
+  <h3>Songs</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 1</span>
+      <div class="rating" id="rating_song_1">
+        <div class="star on"></div>
+        <div class="star on"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="label">2</div>
+      </div>
+    </div>    
+  </div>  
 </body>
 </html>
