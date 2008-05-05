@@ -167,19 +167,30 @@ var Ratable = Class.create({
   
 });
 
-var Rating = Class.create({
+r Rating = Class.create({
 
   initialize: function(class_name) {
     this.class_name = class_name;
     this.options = Object.extend({
       afterRate: Prototype.emptyFunction
     }, arguments[1] || {});
-    this.setup();
+    this.elements = new Array();
+    this.setup();    
   },
 
   setup: function() {
+    Ajax.Responders.register({
+      onComplete: this.parse.bind(this)
+    });
+    this.parse();
+  },
+  
+  parse: function() {
     $$('.' + this.class_name).each(function(element) {
-      new Ratable(element, this.options);
+      if(!this.elements.include(element)) {
+        this.elements.push(element);
+        new Ratable(element, this.options);
+      }      
     }.bind(this));
   }
 
