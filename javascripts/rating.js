@@ -42,12 +42,13 @@ var Ratable = Class.create({
 
   initialize: function(element) {
     this.element = element;
+    this.starsContainer = this.element.down('.stars');
     this.options = Object.extend({
       onRate: Prototype.emptyFunction,
       labelClassName: 'label',
       labelValues: ['bad', 'not bad', 'good', 'very good', 'excellent'],
       labelTemplate: "#{text}",
-      resetDelay: 0.2
+      resetDelay: 0.0
     }, arguments[1] || {});
     this.stars = new Array();
     this.resettingTimeout = null;
@@ -60,9 +61,9 @@ var Ratable = Class.create({
     this.element.select('.star').each(function(element) {
       this.stars.push(new RatingStar(element, this));      
     }.bind(this));
-    this.element.observe('mouseover', this.handleMouseOver.bind(this));
-    this.element.observe('mouseout', this.handleMouseOut.bind(this));
-    this.element.observe('click', this.handleClick.bind(this));
+    this.starsContainer.observe('mouseover', this.handleMouseOver.bind(this));
+    this.starsContainer.observe('mouseout', this.handleMouseOut.bind(this));
+    this.starsContainer.observe('click', this.handleClick.bind(this));
   },
   
   reset: function() {
@@ -139,7 +140,6 @@ var Rating = Class.create({
 
   setup: function() {
     $$('.' + this.options.className).each(function(element) {
-      alert(element.id)
       new Ratable(element, this.options);
     }.bind(this));
   }

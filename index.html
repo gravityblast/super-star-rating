@@ -16,7 +16,7 @@
           alert(element.id + " - " + value)
         },
         labelTemplate: "#{rate} #{text}",
-        resetDelay: 1
+        resetDelay: 0.1
       });
     });
 	</script>
@@ -27,11 +27,13 @@
     <div class="song">
       <span class="title">Song 1</span>
       <div class="rating" id="rating_song_1">
-        <div class="star on"></div>
-        <div class="star on"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
         <div class="label">2</div>
       </div>
     </div>    

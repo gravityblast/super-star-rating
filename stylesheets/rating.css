@@ -1,18 +1,19 @@
-.rating {
+.rating .stars {
   width: 50px;
   height: 9px;
+  float: left;
 }
-.rating .star {
+.rating .stars .star {
   width: 10px;
   height: 9px;
   cursor: pointer;
   background: transparent url('../images/stars.png') no-repeat 0 0;
   float: left;
 }	  
-.rating .star.on {
+.rating .stars  .star.on {
   background-position: 0 -9px;
 }
 
-.rating.selected .star.on {
+.rating.selected .stars .star.on {
   background-position: 0 -18px;
 }
