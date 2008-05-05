@@ -11,22 +11,62 @@
 	<script type="text/javascript" charset="utf-8" src="javascripts/rating.js"></script>
 	<script type="text/javascript" charset="utf-8">
     document.observe('dom:loaded', function(event) {
-      new Rating({
-        onRate: function(element, value) {
-        },
-        labelTemplate: "#{rate} #{text}",
-        resetDelay: 0.1,
-        afterRatelabelText: "Thanks for the '#{rate}' rate"
+      new Rating('simple_rating');
+      new Rating('simple_label');
+      new Rating('custom_label', {
+        labelValues: ['custom bad', 'custom not bad', 'custom good', 'custom very bad', 'custom excellent']
+      });      
+      new Rating('custom_label_template', {
+        labelValues: ['custom bad', 'custom not bad', 'custom good', 'custom very bad', 'custom excellent'],
+        labelText: "#{rate} (#{text})"
       });
+      
+      new Rating('custom_label_after_rating', {        
+        afterRatinglabelText: "Thank for voting the song #{id} (#{rate} - #{text})."
+      });
+      
+      new Rating('not_disabled_rating', {        
+        disabledOnRating: false
+      });
+      
+      new Rating('custom_delay_rating', {        
+        resetDelay: 1
+      });
+      
+      new Rating('after_rate_rating', {        
+        afterRate: function(element, id, rate, text) {
+          alert('You have chosen "' + rate + ' - ' + text + '" for the song with id ' + id)
+        }
+      });
+      
+      new Rating('ajax_rating', {        
+        ajaxUrl: 'ajax-response.html?song_id=#{id}',
+        ajaxMethod: 'GET',
+        ajaxParameters: 'rate=#{rate}'
+      });
+            
     });
 	</script>
 </head>
 <body>
-  <h3>Songs</h3>
+  <h1><a href="http://gravityblast.com/projects/5-stars-rating/">5 Stars Rating</a></h1>
+  <p><a href="http://gravityblast.com/">by Andrea Franz</a></p>
+  <h3>Simple</h3>
   <div id="songs">
     <div class="song">
       <span class="title">Song 1</span>
-      <div class="rating" id="rating_song_1">
+      <div class="simple_rating rating" id="rating_song_1">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>        
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 2</span>
+      <div class="simple_rating rating" id="rating_song_2">
         <div class="stars">
           <div class="star on"></div>
           <div class="star on"></div>
@@ -34,9 +74,251 @@
           <div class="star"></div>
           <div class="star"></div>
         </div>
-        <div class="label">2</div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  <h3>With label</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 3</span>
+      <div class="simple_label rating" id="rating_song_3">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>        
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 4</span>
+      <div class="simple_label rating" id="rating_song_4">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  <h3>Custom label</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 5</span>
+      <div class="custom_label rating" id="rating_song_5">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="label"></div>       
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 6</span>
+      <div class="custom_label rating" id="rating_song_6">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  
+  <h3>Custom label template</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 7</span>
+      <div class="custom_label_template rating" id="rating_song_7">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="label"></div>       
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 8</span>
+      <div class="custom_label_template rating" id="rating_song_8">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  <h3>Custom label after rating</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 9</span>
+      <div class="custom_label_after_rating rating" id="rating_song_9">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="label"></div>       
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 10</span>
+      <div class="custom_label_after_rating rating" id="rating_song_10">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  <h3>Not disabled after voting</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 11</span>
+      <div class="not_disabled_rating rating" id="rating_song_11">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="label"></div>       
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 12</span>
+      <div class="not_disabled_rating rating" id="rating_song_12">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  <h3>Custom resetting delay (1 second after mouseout)</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 13</span>
+      <div class="custom_delay_rating rating" id="rating_song_13">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="label"></div>       
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 14</span>
+      <div class="custom_delay_rating rating" id="rating_song_14">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  <h3>After rate callback</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 15</span>
+      <div class="after_rate_rating rating" id="rating_song_15">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="label"></div>       
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 16</span>
+      <div class="after_rate_rating rating" id="rating_song_16">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
+  
+  <h3>Ajax</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 17</span>
+      <div class="ajax_rating rating" id="rating_song_17">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="label"></div>       
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 18</span>
+      <div class="ajax_rating rating" id="rating_song_18">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="label"></div>
+        <div class="clearer"></div>
       </div>
     </div>    
   </div>  
+  
 </body>
 </html>

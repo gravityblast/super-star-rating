@@ -1,7 +1,7 @@
-/* PrototypeRating, version 0.1
+/* 5 Stars Rating, version 0.2
  * Copyright (c) 2008 Andrea Franz (http://gravityblast.com) 
  *
- * PrototypeRating is freely distributable under the terms of an MIT-style license.
+ * 5 Stars Rating is freely distributable under the terms of an MIT-style license.
  */
  
 var RatingStar = Class.create({
@@ -42,15 +42,19 @@ var Ratable = Class.create({
 
   initialize: function(element) {
     this.element = element;
-    this.starsContainer = this.element.down('.stars');
+    this.id = this.extractId();
+    this.starsContainer = this.element.down('.stars');    
     this.options = Object.extend({
-      onRate: Prototype.emptyFunction,
+      afterRate: Prototype.emptyFunction,
       labelClassName: 'label',
       labelValues: ['bad', 'not bad', 'good', 'very good', 'excellent'],
       labelText: "#{text}",
-      afterRatelabelText: "Thanks for voting!",
+      afterRatinglabelText: "Thanks for voting!",
       resetDelay: 0.0,
-      disabledOnRate: true
+      disabledOnRating: true,
+      ajaxUrl: false,
+      ajaxMethod: 'POST',
+      ajaxParameters: ''
     }, arguments[1] || {}); 
     this.disabled = false;
     this.labelText = '';
@@ -58,6 +62,12 @@ var Ratable = Class.create({
     this.resettingTimeout = null;
     this.label = this.element.down('.' + this.options.labelClassName);
     this.setup();
+  },
+  
+  extractId: function() {
+    var m = this.element.id.match(/\.*([0-9]+)/);
+    var id = m ? m[1] : null;
+    return id;
   },
 
   setup: function() {
@@ -97,18 +107,31 @@ var Ratable = Class.create({
   
   handleClick: function(event) {
     if(this.disabled) return;
-    if(this.options.disabledOnRate) this.disabled = true;    
+    if(this.options.disabledOnRating) this.disabled = true;    
     var rate = this.getCurrentRating();
     var text = this.options.labelValues[rate - 1] ? this.options.labelValues[rate - 1] : "";
-    this.labelText = new Template(this.options.afterRatelabelText).evaluate({text: text, rate: rate});
+    this.labelText = new Template(this.options.afterRatinglabelText).evaluate({id: this.id, text: text, rate: rate});
     this.updateLabel();
-    this.options.onRate(this.element, this.getCurrentRating());
+    this.options.afterRate(this.element, this.id, this.getCurrentRating(), text);
+    this.createAjax();
+  },
+  
+  createAjax: function() {    
+    if(this.options.ajaxUrl && this.label) {
+      var rate = this.getCurrentRating();
+      var url = new Template(this.options.ajaxUrl).evaluate({id: this.id, rate: rate});
+      var parameters = new Template(this.options.ajaxParameters).evaluate({id: this.id, rate: rate});
+      new Ajax.Updater(this.label, url, {
+        method: this.options.ajaxMethod,
+        parameters: parameters
+      });
+    }
   },
   
   updateLabelText: function() {
     var rate = this.getCurrentRating();
     var text = this.options.labelValues[rate - 1] ? this.options.labelValues[rate - 1] : "";
-    this.labelText = new Template(this.options.labelTemplate).evaluate({text: text, rate: rate});
+    this.labelText = new Template(this.options.labelText).evaluate({id: this.id, text: text, rate: rate});
     this.updateLabel();
   },
   
@@ -146,16 +169,16 @@ var Ratable = Class.create({
 
 var Rating = Class.create({
 
-  initialize: function() {
+  initialize: function(class_name) {
+    this.class_name = class_name;
     this.options = Object.extend({
-      className: 'rating',
-      onRate: Prototype.emptyFunction
-    }, arguments[0] || {});
+      afterRate: Prototype.emptyFunction
+    }, arguments[1] || {});
     this.setup();
   },
 
   setup: function() {
-    $$('.' + this.options.className).each(function(element) {
+    $$('.' + this.class_name).each(function(element) {
       new Ratable(element, this.options);
     }.bind(this));
   }
