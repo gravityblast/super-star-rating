@@ -39,8 +39,14 @@
         }
       });
       
-      new Rating('ajax_rating', {        
-        ajaxUrl: 'ajax-response.html?song_id=#{id}',
+      new Rating('ajax_update_rating', {        
+        ajaxUrl: 'ajax-update-response.html?song_id=#{id}',
+        ajaxMethod: 'GET',
+        ajaxParameters: 'rate=#{rate}'
+      });
+      
+      new Rating('ajax_request_rating', {        
+        ajaxUrl: 'ajax-request-response.js?song_id=#{id}',
         ajaxMethod: 'GET',
         ajaxParameters: 'rate=#{rate}'
       });
@@ -290,11 +296,11 @@
     </div>    
   </div>
   
-  <h3>Ajax</h3>
+  <h3>Ajax.Update</h3>
   <div id="songs">
     <div class="song">
       <span class="title">Song 17</span>
-      <div class="ajax_rating rating" id="rating_song_17">
+      <div class="ajax_update_rating rating" id="rating_song_17">
         <div class="stars">
           <div class="star on"></div>
           <div class="star on"></div>
@@ -306,7 +312,7 @@
         <div class="clearer"></div>
       </div>
       <span class="title">Song 18</span>
-      <div class="ajax_rating rating" id="rating_song_18">
+      <div class="ajax_update_rating rating" id="rating_song_18">
         <div class="stars">
           <div class="star on"></div>
           <div class="star on"></div>
@@ -318,7 +324,35 @@
         <div class="clearer"></div>
       </div>
     </div>    
-  </div>  
+  </div>
+    
+  <h3>Ajax.Request (you can test it only with a webserver. Not offline.)</h3>
+  <div id="songs">
+    <div class="song">
+      <span class="title">Song 19</span>
+      <div class="ajax_request_rating rating" id="rating_song_19">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div> 
+        <div class="clearer"></div>
+      </div>
+      <span class="title">Song 20</span>
+      <div class="ajax_request_rating rating" id="rating_song_20">
+        <div class="stars">
+          <div class="star on"></div>
+          <div class="star on"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+          <div class="star"></div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>    
+  </div>
   
 </body>
 </html>
