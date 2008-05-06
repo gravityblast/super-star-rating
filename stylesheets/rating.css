@@ -15,10 +15,22 @@
   background: transparent url('../images/stars.png') no-repeat 0 0;
   float: left;
 }	  
-.rating .stars  .star.on {
+
+.rating .stars .star.on {
   background-position: 0 -9px;
+}
+
+.rating .stars .star.on.half {
+  background-position: 0 -9px;
+  width: 5px;
+  margin-right: 4px;
 }
 
 .rating.selected .stars .star.on {
   background-position: 0 -18px;
+}
+
+.rating.selected .stars .star.on.half {
+  width: 10px;
+  margin-right: 0px;
 }
