@@ -1,7 +1,7 @@
-/* 5 Stars Rating, version 0.2
+/* Super Star Rating, version 0.2
  * Copyright (c) 2008 Andrea Franz (http://gravityblast.com) 
  *
- * 5 Stars Rating is freely distributable under the terms of an MIT-style license.
+ * Super Star Rating is freely distributable under the terms of an MIT-style license.
  */
  
 var RatingStar = Class.create({
