@@ -1,3 +1,41 @@
-.song {
-  margin: 5px 0;
+body {
+  text-align: center;
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height:1.2em;
+}
+
+#container {
+  text-align: left;
+  width: 700px;
+  margin: 0 auto;
+  border: 1px solid #CCC;
+  padding: 10px;
+}
+
+.example h3 {
+  margin: 10px 0;
+}
+
+.example .item {
+  border: 1px solid #CCC;
+  padding: 10px;
+  width: 300px;  
+}
+
+.example .item .title {
+  font-size: 14px;
+  margin: 0 0 10px 5px;
+}
+
+.example .item.first {
+  float: left;
+}
+
+.example .item.second {
+  float: right;
+}
+
+.clearer {
+  clear: both;
 }

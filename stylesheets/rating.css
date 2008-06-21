@@ -1,36 +1,44 @@
 .rating .stars {
-  width: 50px;
-  height: 9px;
+  width: 125px;
+  height: 25px;
   float: left;
+  background: transparent url('../images/stars.gif') repeat-x right top;
+  margin-right: 5px;
 }
 
 .rating .clearer {
   clear: left;
 }
 
+.rating .label {  
+  line-height: 16px;
+  font-size: 90%;
+}
+
 .rating .stars .star {
-  width: 10px;
-  height: 9px;
+  width: 25px;
+  height: 25px;
   cursor: pointer;
-  background: transparent url('../images/stars.png') no-repeat 0 0;
+  background: transparent url('../images/stars.gif') no-repeat 0 0;
   float: left;
 }	  
 
 .rating .stars .star.on {
-  background-position: 0 -9px;
-}
-
-.rating .stars .star.on.half {
-  background-position: 0 -9px;
-  width: 5px;
-  margin-right: 4px;
+  background-position: -25px 0;
 }
 
 .rating.selected .stars .star.on {
-  background-position: 0 -18px;
+  background-position: -50px 0;
+}
+
+.rating .stars .star.on.half {
+  background-position: -25px 0;
+  width: 12px;
+  margin-right: 12px;
 }
 
 .rating.selected .stars .star.on.half {
-  width: 10px;
+  width: 25px;
   margin-right: 0px;
+  background-position: -50px 0;
 }
